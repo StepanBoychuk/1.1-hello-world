@@ -1,15 +1,11 @@
-process.stdout.write('Hello World\n');
-const startTime = Date.now();
+console.log('Hello World');
+const exitTime = 10000
 
 const timerId = setTimeout(() => {
-    process.stdout.write('Goodbye World\n');
-    process.exit(0);
-}, 10000);
+    console.log('Goodbye World');
+}, exitTime);
 
-process.stdin.on('data', (data) => {
-    if(data.toString().trim() === 'finish'){
-        clearTimeout(timerId);
-        process.stdout.write('Stopped by user after ' + (Date.now() - startTime)/1000 + ' seconds\n');
-        process.exit(0);
-    }
-})
+process.on('SIGINT', () => {
+    console.log('\nStopped by user after ' + Math.floor(process.uptime()) + ' seconds');
+    process.exit(0);
+});
